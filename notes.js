@@ -8,9 +8,7 @@ const { loadNotes, saveNotes } = require("./helpers");
  */
 const addNote = (title, body) => {
   const notes = loadNotes();
-  const duplicateNotes = notes.filter((note) => {
-    return note.title === title;
-  });
+  const duplicateNotes = notes.filter((note) => note.title === title);
 
   if (duplicateNotes.length === 0) {
     notes.push({
@@ -25,12 +23,13 @@ const addNote = (title, body) => {
   }
 };
 
+/**
+ * Remove an existing note
+ * @param {String} title
+ */
 const removeNote = (title) => {
   const notes = loadNotes();
-  console.log(notes);
-  const notesToKeep = notes.filter((note) => {
-    return note.title !== title;
-  });
+  const notesToKeep = notes.filter((note) => note.title !== title);
 
   if (notesToKeep.length < notes.length) {
     console.log(chalk.green("Note removed :)"));
@@ -40,7 +39,27 @@ const removeNote = (title) => {
   }
 };
 
+const listNotes = () => {
+  const notes = loadNotes();
+
+  if (notes.length === 0) {
+    console.log(chalk.yellow("You do not have any note!"));
+    return;
+  }
+
+  console.log(chalk.bgGreen("Your Notes..."));
+  notes.forEach((note) => {
+    console.log(
+      chalk.yellow("Title: "),
+      note.title,
+      chalk.yellow(" Body: "),
+      note.body
+    );
+  });
+};
+
 module.exports = {
   addNote,
   removeNote,
+  listNotes,
 };
