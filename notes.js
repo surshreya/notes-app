@@ -1,5 +1,5 @@
-const fs = require("fs");
 const chalk = require("chalk");
+const { loadNotes, saveNotes } = require("./helpers");
 
 /**
  * Function to add a new note to the note file
@@ -25,29 +25,22 @@ const addNote = (title, body) => {
   }
 };
 
-/**
- * Loads the note file
- * @returns Object
- */
-const loadNotes = () => {
-  try {
-    const dataBuffer = fs.readFileSync("notes.json");
-    const dataJSON = dataBuffer.toString();
-    return JSON.parse(dataJSON);
-  } catch (err) {
-    return [];
-  }
-};
+const removeNote = (title) => {
+  const notes = loadNotes();
+  console.log(notes);
+  const notesToKeep = notes.filter((note) => {
+    return note.title !== title;
+  });
 
-/**
- * Writes the list of notes to the note file
- * @param {Array} notes
- */
-const saveNotes = (notes) => {
-  const dataJSON = JSON.stringify(notes);
-  fs.writeFileSync("notes.json", dataJSON);
+  if (notesToKeep.length < notes.length) {
+    console.log(chalk.green("Note removed :)"));
+    saveNotes(notesToKeep);
+  } else {
+    console.log(chalk.yellow("No note found!"));
+  }
 };
 
 module.exports = {
   addNote,
+  removeNote,
 };
