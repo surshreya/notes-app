@@ -39,6 +39,10 @@ const removeNote = (title) => {
   }
 };
 
+/**
+ * Displays all the notes
+ * @returns
+ */
 const listNotes = () => {
   const notes = loadNotes();
 
@@ -58,8 +62,29 @@ const listNotes = () => {
   });
 };
 
+/**
+ * Reads a particular note
+ * @param {String} title
+ */
+const readNote = (title) => {
+  const notes = loadNotes();
+  const note = notes.find((note) => note.title === title);
+
+  if (!note) {
+    console.log(chalk.red("No note found!"));
+  } else {
+    console.log(
+      chalk.yellow("Title: "),
+      note.title,
+      chalk.yellow(" Body: "),
+      note.body
+    );
+  }
+};
+
 module.exports = {
   addNote,
   removeNote,
   listNotes,
+  readNote,
 };
